@@ -76,13 +76,13 @@ public class Controller2 implements Initializable{
 		try {
 		    FileInputStream fis = new FileInputStream("SaveData.dat");
 		    ObjectInputStream ois = new ObjectInputStream(fis);
-		    M1 m1 = (M1) ois.readObject();
+		    m1 = (M1) ois.readObject();
 		    ois.close();
 		} catch (Exception e) {
 		}
     }
 
-	public static void setUrl(String url) {
+	public void setUrl(String url) {
 		urlText = url;
 	}
 }

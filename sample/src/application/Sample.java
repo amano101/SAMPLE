@@ -1,5 +1,7 @@
 package application;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.net.URL;
 
 import control.Controller2;
@@ -12,9 +14,16 @@ import model.M1;
 
 public class Sample extends Application {
 
-	private M1 datebase;
+	private static M1 m1 = new M1();
 
     public static void main(String[] args) {
+		try {
+		    FileInputStream fis = new FileInputStream("SaveData.dat");
+		    ObjectInputStream ois = new ObjectInputStream(fis);
+		    m1 = (M1) ois.readObject();
+		    ois.close();
+		} catch (Exception e) {
+		}
         launch(args);
     }
 
@@ -39,7 +48,7 @@ public class Sample extends Application {
             // ロードしたFXMLファイルに関連づくControllerを取得
             final Controller2 c2 = (Controller2) fxmlLoader.getController();
             // Controllerさん、どうぞ。
-            Controller2.setUrl(result);
+            c2.setUrl(result);
         }
 
         // シーンの作成
@@ -48,4 +57,12 @@ public class Sample extends Application {
         stage.setScene( scene );
         stage.show();
     }
+
+	public M1 getM1() {
+		return m1;
+	}
+
+	public void setM1(M1 m1) {
+		this.m1 = m1;
+	}
 }
