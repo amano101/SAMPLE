@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.web.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.web.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="610.0"
-	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.Controller1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.Controller1">
    <children>
       <TextField fx:id="url" layoutX="21.0" layoutY="21.0" prefHeight="45.0" prefWidth="471.0" />
       <Button layoutX="505.0" layoutY="21.0" mnemonicParsing="false" onAction="#onClick" text="Button" />
       <Button layoutX="505.0" layoutY="86.0" mnemonicParsing="false" onAction="#onBookmark" text="Button" />
-      <WebView fx:id="video" layoutX="205.0" layoutY="174.0" prefHeight="200.0" prefWidth="200.0" />
+      <WebView fx:id="video" layoutX="21.0" layoutY="147.0" prefHeight="341.0" prefWidth="358.0" />
+      <ComboBox fx:id="list" layoutX="21.0" layoutY="86.0" prefHeight="45.0" prefWidth="471.0" onAction="#onChange"/>
+      <TableView fx:id="table" layoutX="392.0" layoutY="148.0" prefHeight="335.0" prefWidth="200.0">
+        <columns>
+          <TableColumn fx:id="playList" prefWidth="200.0" text="プレイリスト">
+			<contextMenu>
+	          <ContextMenu onAction="#onMenu">
+	            <items>
+	                <MenuItem mnemonicParsing="false" onAction="#onAdd" text="追加" />
+	                <MenuItem mnemonicParsing="false" onAction="#onDelete" text="削除" />
+	                <Menu fx:id="moveMenu" mnemonicParsing="false" text="移動" />
+	            </items>
+	          </ContextMenu>
+			</contextMenu>
+          </TableColumn>
+        </columns>
+      </TableView>
    </children>
 </Pane>

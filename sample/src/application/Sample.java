@@ -1,10 +1,9 @@
 package application;
 
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 import java.net.URL;
 
 import control.Controller2;
+import control.Controller3;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,25 +16,36 @@ public class Sample extends Application {
 	private static M1 m1 = new M1();
 
     public static void main(String[] args) {
-		try {
-		    FileInputStream fis = new FileInputStream("SaveData.dat");
-		    ObjectInputStream ois = new ObjectInputStream(fis);
-		    m1 = (M1) ois.readObject();
-		    ois.close();
-		} catch (Exception e) {
-		}
-        launch(args);
+    	launch(args);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
     	String fxml = "/view/url.fxml";
-     	xfmlLode(fxml,null);
+     	xfmlLode(fxml);
     }
 
     public void dialog1(String result) throws Exception{
     	String fxml = "/view/dialog1.fxml";
     	xfmlLode(fxml,result);
+    }
+
+    public void dialog2(String result,String bookMarkName) throws Exception{
+    	String fxml = "/view/dialog2.fxml";
+    	xfmlLode(fxml,result,bookMarkName);
+    }
+
+    public void xfmlLode(String fxml) throws Exception {
+    	Stage stage = new Stage();
+    	URL             location    = getClass().getResource(fxml);
+        FXMLLoader      fxmlLoader  = new FXMLLoader( location );
+        // シーングラフの作成
+        Pane    root        = (Pane) fxmlLoader.load();
+        // シーンの作成
+        Scene   scene       = new Scene( root , root.getPrefWidth() , root.getPrefHeight());
+        // ウィンドウ表示
+        stage.setScene( scene );
+        stage.show();
     }
 
     public void xfmlLode(String fxml,String result) throws Exception {
@@ -44,12 +54,31 @@ public class Sample extends Application {
         FXMLLoader      fxmlLoader  = new FXMLLoader( location );
         // シーングラフの作成
         Pane    root        = (Pane) fxmlLoader.load();
-        if(!(result == null)) {
-            // ロードしたFXMLファイルに関連づくControllerを取得
-            final Controller2 c2 = (Controller2) fxmlLoader.getController();
-            // Controllerさん、どうぞ。
-            c2.setUrl(result);
-        }
+
+        // ロードしたFXMLファイルに関連づくControllerを取得
+        final Controller2 c2 = (Controller2) fxmlLoader.getController();
+        // Controllerさん、どうぞ。
+        c2.setUrl(result);
+
+        // シーンの作成
+        Scene   scene       = new Scene( root , root.getPrefWidth() , root.getPrefHeight());
+        // ウィンドウ表示
+        stage.setScene( scene );
+        stage.show();
+    }
+
+    public void xfmlLode(String fxml,String result,String comBox) throws Exception {
+    	Stage stage = new Stage();
+    	URL             location    = getClass().getResource(fxml);
+        FXMLLoader      fxmlLoader  = new FXMLLoader( location );
+        // シーングラフの作成
+        Pane    root        = (Pane) fxmlLoader.load();
+
+        // ロードしたFXMLファイルに関連づくControllerを取得
+        final Controller3 c3 = (Controller3) fxmlLoader.getController();
+        // Controllerさん、どうぞ。
+        c3.setUrl(result);
+        c3.setComBox(comBox);
 
         // シーンの作成
         Scene   scene       = new Scene( root , root.getPrefWidth() , root.getPrefHeight());

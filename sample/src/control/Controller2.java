@@ -1,8 +1,4 @@
 package control;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +16,7 @@ import model.M1;
 public class Controller2 implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+    	new common.LodeData();
     }
 
     M1 m1 = new M1();
@@ -61,25 +57,13 @@ public class Controller2 implements Initializable{
         	bookMark.get("test").get(1).put(urlName, url);
         	m1.setBookMarkList(bookMark);
 
-        	try {
-        	    FileOutputStream fos = new FileOutputStream("SaveData.dat");
-        	    ObjectOutputStream oos = new ObjectOutputStream(fos);
-        	    oos.writeObject(m1);
-        	    oos.close();
-        	} catch (Exception e) {
-        	}
+        	common.SaveData.save(m1);
         }
     }
 
 	@FXML
     public void onLode(ActionEvent event) {
-		try {
-		    FileInputStream fis = new FileInputStream("SaveData.dat");
-		    ObjectInputStream ois = new ObjectInputStream(fis);
-		    m1 = (M1) ois.readObject();
-		    ois.close();
-		} catch (Exception e) {
-		}
+		new common.LodeData();
     }
 
 	public void setUrl(String url) {
