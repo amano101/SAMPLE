@@ -22,22 +22,22 @@ public class Controller2 implements Initializable{
     M1 m1 = new M1();
 
     @FXML
-    private TextField name;
+    private TextField urlName;
 
     @FXML
     private static String urlText;
 
     /** コンボボックス：名前 */
     @FXML
-    private ComboBox<String> cbKind;
+    private ComboBox<String> onAdd;
 
     Alert alert = new Alert(AlertType.ERROR); //アラートを作成
 
 	@FXML
     public void onClick(ActionEvent event) {
-    	String urlName = name.getText();
+    	String name = urlName.getText();
     	String url = urlText;
-        if(urlName.isEmpty() || urlName == "null") {
+        if(name.isEmpty() || name == "null") {
         	alert.setContentText("名前を入力して下さい。");
         	alert.showAndWait(); //表示
         	return;
@@ -54,12 +54,25 @@ public class Controller2 implements Initializable{
         	bookMark = m1.getBookMarkList();
         	bookMark.put("test",new HashMap());
         	bookMark.get("test").put(1, new HashMap());
-        	bookMark.get("test").get(1).put(urlName, url);
+        	bookMark.get("test").get(1).put(name, url);
         	m1.setBookMarkList(bookMark);
 
         	common.SaveData.save(m1);
         }
     }
+
+	@FXML
+    public void onAddPlayList(ActionEvent event) {
+	}
+
+	@FXML
+    public void onDeletePlayList(ActionEvent event) {
+	}
+
+	@FXML
+    public void onAdd(ActionEvent event) {
+	}
+
 
 	@FXML
     public void onLode(ActionEvent event) {

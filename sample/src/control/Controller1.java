@@ -1,7 +1,6 @@
 package control;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,22 +46,25 @@ public class Controller1 extends Sample implements Initializable{
 
 	private M1 m1 = new M1();
 
+	private MenuItem menuItem = null;
+
+	private List<Integer> sort = new ArrayList<>();
+
 	@Override
     public void initialize(URL location, ResourceBundle resources) {
     	LodeData lodeData = new LodeData();
     	lodeData.lode();
     	m1 = lodeData.getM1();
+		list.getItems().clear();
     	if(m1.getBookMarkList() != null) {
-    		String[] Number = Arrays.asList(m1.getBookMarkList().keySet()).toArray(new String[m1.getBookMarkList().keySet().size()]);
-    		for(int i = 0;i<= Number.length;i++) {
-    			list.setValue(Number[i]);
-    		}
-	    	MenuItem[] menuList = (MenuItem[]) m1.getBookMarkList().keySet().toArray();
-	    	if(menuList.length > 0) {
+    		list.getItems().addAll(m1.getBookMarkList().keySet());
+    		List<String> listData = new ArrayList<>();
+    		listData.addAll(m1.getBookMarkList().keySet());
+	    	if(m1.getBookMarkList().size()> 0) {
 	    		moveMenu.setDisable(false);
-
-	    		for(int i = 0;i <= menuList.length; i++) {
-	    			moveMenu.getItems().add(i,menuList[i]);
+	    		for(int i = 0;i < m1.getBookMarkList().size(); i++) {
+	    			menuItem = new MenuItem(listData.get(i));
+	    			moveMenu.getItems().add(i,menuItem);
 	    		}
 	    	}
 	    	else {
@@ -93,16 +95,15 @@ public class Controller1 extends Sample implements Initializable{
     @FXML
     public void onChange(ActionEvent event) throws Exception {
     	String comBox = list.getValue();
-    	Integer[] sort = (Integer[]) m1.getBookMarkList().get(comBox).keySet().toArray();
     	Map<String, String> map = new HashMap<>();
-    	for(int i = 0;i<=sort.length;i++) {
+    	for(int i = 0;i<=sort.size();i++) {
     		map.putAll(m1.getBookMarkList().get(comBox).get(i));
     	}
-
+    	sort.addAll(m1.getBookMarkList().get(comBox).keySet());
     	List<String> a = new ArrayList<String>();
     	ObservableList<String> books = FXCollections.observableArrayList();
-		for(int i = 0;i<=sort.length;i++) {
-			books.addAll(m1.getBookMarkList().get(comBox).get(sort[i]).keySet());
+		for(int i = 0;i<=sort.size();i++) {
+			books.addAll(m1.getBookMarkList().get(comBox).get(sort.get(i)).keySet());
 		}
 		table.setItems(books);
     }
@@ -123,13 +124,13 @@ public class Controller1 extends Sample implements Initializable{
     @FXML
     public void onDelete(ActionEvent event) {
     	String comBox = list.getValue();
-    	Integer[] sort =  (Integer[]) m1.getBookMarkList().get(comBox).keySet().toArray();
-    	for(int i = 0;i<=sort.length;i++) {
-    		m1.getBookMarkList().get(comBox).get(sort[i]).remove(bookMarkName);
+    	sort.addAll(m1.getBookMarkList().get(comBox).keySet());
+    	for(int i = 0;i<=sort.size();i++) {
+    		m1.getBookMarkList().get(comBox).get(sort.get(i)).remove(bookMarkName);
     	}
-    	sort =  (Integer[]) m1.getBookMarkList().get(comBox).keySet().toArray();
-    	for(int j = 1;j<sort.length+1;j++){
-    		m1.getBookMarkList().get(comBox).put(j,m1.getBookMarkList().get(comBox).get(sort[j]));
+    	sort.addAll(m1.getBookMarkList().get(comBox).keySet());
+    	for(int j = 1;j < sort.size()+1;j++){
+    		m1.getBookMarkList().get(comBox).put(j,m1.getBookMarkList().get(comBox).get(sort.get(j)));
     	}
     	common.SaveData.save(m1);
     }
@@ -138,21 +139,21 @@ public class Controller1 extends Sample implements Initializable{
     public void onMove(ActionEvent event) {
     	String text = "null";
     	String comBox = list.getValue();
-    	Integer[] sort =  (Integer[]) m1.getBookMarkList().get(comBox).keySet().toArray();
-    	for(int i = 0;i<=sort.length;i++) {
-    		text = m1.getBookMarkList().get(comBox).get(sort[i]).get(bookMarkName);
+    	sort.addAll(m1.getBookMarkList().get(comBox).keySet());
+    	for(int i = 0;i< sort.size();i++) {
+    		text = m1.getBookMarkList().get(comBox).get(sort.get(i)).get(bookMarkName);
     		if(text != "null" || !(text.isEmpty())) {
     			break;
     		}
     	}
-    	for(int i = 0;i<=sort.length;i++) {
-    		m1.getBookMarkList().get(comBox).get(sort[i]).remove(bookMarkName);
+    	for(int i = 0;i < sort.size();i++) {
+    		m1.getBookMarkList().get(comBox).get(sort.get(i)).remove(bookMarkName);
     	}
     	String name = moveMenu.onActionProperty().getName();
     	Integer max = 0;
-    	Integer[] sort2 =  (Integer[]) m1.getBookMarkList().get(name).keySet().toArray();
-    	for(int i = 0; i < sort2.length; i++) {
-            max = Math.max(max,sort[i]);
+    	sort.addAll(m1.getBookMarkList().get(comBox).keySet());
+    	for(int i = 0; i < sort.size(); i++) {
+            max = Math.max(max,sort.get(i));
      	}
     	m1.getBookMarkList().get(name).put(max+1, new HashMap());
     	m1.getBookMarkList().get(name).get(max+1).put(bookMarkName, text);

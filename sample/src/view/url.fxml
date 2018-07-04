@@ -8,8 +8,8 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.Controller1">
    <children>
       <TextField fx:id="url" layoutX="21.0" layoutY="21.0" prefHeight="45.0" prefWidth="471.0" />
-      <Button layoutX="505.0" layoutY="21.0" mnemonicParsing="false" onAction="#onClick" text="Button" />
-      <Button layoutX="505.0" layoutY="86.0" mnemonicParsing="false" onAction="#onBookmark" text="Button" />
+      <Button layoutX="505.0" layoutY="21.0" mnemonicParsing="false" onAction="#onClick" text="再生" />
+      <Button layoutX="505.0" layoutY="86.0" mnemonicParsing="false" onAction="#onBookmark" text="追加" />
       <WebView fx:id="video" layoutX="21.0" layoutY="147.0" prefHeight="341.0" prefWidth="358.0" />
       <ComboBox fx:id="list" layoutX="21.0" layoutY="86.0" prefHeight="45.0" prefWidth="471.0" onAction="#onChange"/>
       <TableView fx:id="table" layoutX="392.0" layoutY="148.0" prefHeight="335.0" prefWidth="200.0">
