@@ -8,6 +8,8 @@ import java.util.ResourceBundle;
 
 import application.Sample;
 import common.LodeData;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,13 +19,14 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.web.WebView;
 import model.M1;
 
 public class Controller1 extends Sample implements Initializable{
 
 	@FXML
-    private TableView<String> table;
+    private TableView<Person> table;
 
 	@FXML
 	private Menu moveMenu;
@@ -32,7 +35,7 @@ public class Controller1 extends Sample implements Initializable{
     private TextField url;
 
     @FXML
-    private TableColumn<Integer,String> playList;
+    private TableColumn playList;
 
     @FXML
     private WebView video;
@@ -50,6 +53,7 @@ public class Controller1 extends Sample implements Initializable{
 
 	@Override
     public void initialize(URL location, ResourceBundle resources) {
+		playList.setCellValueFactory(new PropertyValueFactory<Person, String>("name"));
     	LodeData lodeData = new LodeData();
     	lodeData.lode();
     	m1 = lodeData.getM1();
@@ -99,8 +103,10 @@ public class Controller1 extends Sample implements Initializable{
 	    		map.putAll(m1.getBookMarkList().get(comBox).get(i));
 	    	}
 	    	sort.addAll(m1.getBookMarkList().get(comBox).keySet());
+	    	
 			for(int i = 0;i < sort.size();i++) {
-				 table.getItems().get(i).add(m1.getBookMarkList().get(comBox).get(sort.get(0)).keySet());
+				list.addAll(m1.getBookMarkList().get(comBox).get(sort.get(0)).keySet());
+				table.getItems().add(new Person(list.get(i)));
 			}
     	}
     }
@@ -162,20 +168,13 @@ public class Controller1 extends Sample implements Initializable{
     }
 
     public class Person {
-        private Integer number;
-        private String name;
-		public Integer getNumber() {
-			return number;
-		}
-		public void setNumber(Integer number) {
-			this.number = number;
-		}
-		public String getName() {
-			return name;
-		}
-		public void setName(String name) {
-			this.name = name;
-		}
-
+        private StringProperty name;
+        
+        public Person(String aName) {
+            name = new SimpleStringProperty(aName);
+        }
+        public StringProperty nameProperty() {
+            return name;
+        }
     }
 }
