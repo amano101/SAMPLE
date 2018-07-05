@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import common.LodeData;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,7 +17,13 @@ import model.M1;
 public class Controller2 implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    	new common.LodeData();
+    	LodeData lodeData = new LodeData();
+    	lodeData.lode();
+    	m1 = lodeData.getM1();
+    	onAdd.getItems().clear();
+    	if(new common.NullCheck().nullCheck(m1)) {
+    		onAdd.getItems().addAll(m1.getBookMarkList().keySet());
+    	}
     }
 
     M1 m1 = new M1();
@@ -43,7 +50,7 @@ public class Controller2 implements Initializable{
         	return;
         }
 
-        else if(url.isEmpty() || url == "null") {
+        else if(!(new common.NullCheck().nullCheck(m1))) {
         	alert.setContentText("URLがありません。");
         	alert.showAndWait(); //表示
         	return;
