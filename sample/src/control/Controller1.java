@@ -16,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -59,6 +60,9 @@ public class Controller1 extends Sample implements Initializable{
     	m1 = lodeData.getM1();
 		list.getItems().clear();
     	if(new common.NullCheck().nullCheck(m1)) {
+    		//単一セルの選択の有効化
+    		table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+    		table.getSelectionModel().setCellSelectionEnabled(true);
     		list.getItems().addAll(m1.getBookMarkList().keySet());
     		List<String> listData = new ArrayList<>();
     		listData.addAll(m1.getBookMarkList().keySet());
@@ -103,7 +107,7 @@ public class Controller1 extends Sample implements Initializable{
 	    		map.putAll(m1.getBookMarkList().get(comBox).get(i));
 	    	}
 	    	sort.addAll(m1.getBookMarkList().get(comBox).keySet());
-	    	
+
 			for(int i = 0;i < sort.size();i++) {
 				list.addAll(m1.getBookMarkList().get(comBox).get(sort.get(0)).keySet());
 				table.getItems().add(new Person(list.get(i)));
@@ -113,7 +117,7 @@ public class Controller1 extends Sample implements Initializable{
 
     @FXML
     public void onMenu(ActionEvent event) {
-    	this.bookMarkName = table.selectionModelProperty().getName();
+    	this.bookMarkName = table.getSelectionModel().getSelectedItem().name.getValue();
     }
 
     @FXML
@@ -127,16 +131,36 @@ public class Controller1 extends Sample implements Initializable{
     @FXML
     public void onDelete(ActionEvent event) {
     	String comBox = list.getValue();
+    	Map<String, String> map = new HashMap<>();
+    	List<String> list = new ArrayList<>();
     	if(new common.NullCheck().nullCheck(m1)) {
 	    	sort.addAll(m1.getBookMarkList().get(comBox).keySet());
 	    	for(int i = 0;i < sort.size();i++) {
-	    		m1.getBookMarkList().get(comBox).get(sort.get(i)).remove(bookMarkName);
+	    		if(m1.getBookMarkList().get(comBox).get(sort.get(i)).containsKey(bookMarkName) == true) {
+	    			m1.getBookMarkList().get(comBox).get(sort.get(i)).remove(bookMarkName);
+	    			m1.getBookMarkList().get(comBox).remove(sort.get(i));
+	    		}
 	    	}
 	    	sort.addAll(m1.getBookMarkList().get(comBox).keySet());
-	    	for(int j = 1;j < sort.size()+1;j++){
-	    		m1.getBookMarkList().get(comBox).put(j,m1.getBookMarkList().get(comBox).get(sort.get(j)));
-	    	}
+	    	if(sort == null || sort.isEmpty()) {
+		    	for(int j = 1;j < sort.size()+1;j++){
+		    		m1.getBookMarkList().get(comBox).put(j,m1.getBookMarkList().get(comBox).get(sort.get(j)));
+		    	}
+		    	common.SaveData.save(m1);
+		    }
 	    	common.SaveData.save(m1);
+
+	    	if(new common.NullCheck().nullCheck(m1)) {
+		    	for(int i = 0;i < sort.size();i++) {
+		    		map.putAll(m1.getBookMarkList().get(comBox).get(i));
+		    	}
+		    	sort.addAll(m1.getBookMarkList().get(comBox).keySet());
+
+				for(int i = 0;i < sort.size();i++) {
+					list.addAll(m1.getBookMarkList().get(comBox).get(sort.get(0)).keySet());
+					table.getItems().add(new Person(list.get(i)));
+				}
+	    	}
     	}
     }
 
@@ -169,7 +193,7 @@ public class Controller1 extends Sample implements Initializable{
 
     public class Person {
         private StringProperty name;
-        
+
         public Person(String aName) {
             name = new SimpleStringProperty(aName);
         }

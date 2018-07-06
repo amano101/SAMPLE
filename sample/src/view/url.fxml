@@ -14,18 +14,17 @@
       <ComboBox fx:id="list" layoutX="21.0" layoutY="86.0" prefHeight="45.0" prefWidth="471.0" onAction="#onChange"/>
       <TableView fx:id="table" layoutX="392.0" layoutY="148.0" prefHeight="335.0" prefWidth="200.0">
         <columns>
-          <TableColumn fx:id="playList" prefWidth="200.0" text="プレイリスト">
-			<contextMenu>
-	          <ContextMenu onAction="#onMenu">
-	            <items>
-	                <MenuItem mnemonicParsing="false" onAction="#onAdd" text="追加" />
-	                <MenuItem mnemonicParsing="false" onAction="#onDelete" text="削除" />
-	                <Menu fx:id="moveMenu" mnemonicParsing="false" text="移動" />
-	            </items>
-	          </ContextMenu>
-			</contextMenu>
-          </TableColumn>
+          <TableColumn fx:id="playList" prefWidth="200.0" text="プレイリスト"/>
         </columns>
+		<contextMenu>
+          <ContextMenu onAction="#onMenu">
+            <items>
+                <MenuItem mnemonicParsing="false" onAction="#onAdd" text="追加" />
+                <MenuItem mnemonicParsing="false" onAction="#onDelete" text="削除" />
+                <Menu fx:id="moveMenu" mnemonicParsing="false" text="移動" />
+            </items>
+          </ContextMenu>
+		</contextMenu>
       </TableView>
    </children>
 </Pane>

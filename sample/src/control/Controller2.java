@@ -80,7 +80,6 @@ public class Controller2 implements Initializable{
     public void onAdd(ActionEvent event) {
 	}
 
-
 	@FXML
     public void onLode(ActionEvent event) {
 		new common.LodeData();
