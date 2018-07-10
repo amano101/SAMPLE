@@ -10,7 +10,7 @@
       <TextField fx:id="urlName" layoutX="35.0" layoutY="92.0" prefHeight="45.0" prefWidth="439.0" />
       <Button layoutX="217.0" layoutY="163.0" mnemonicParsing="false" onAction="#onAddPlayList" text="プレイリスト作成" />
       <Button layoutX="399.0" layoutY="163.0" mnemonicParsing="false" onAction="#onDeletePlayList" text="プレイリスト削除" />
-      <ComboBox fx:id="onAdd" layoutX="35.0" layoutY="20.0" prefHeight="45.0" prefWidth="526.0" />
+      <ComboBox fx:id="playList" layoutX="35.0" layoutY="20.0" prefHeight="45.0" prefWidth="526.0" />
       <Button layoutX="491.0" layoutY="92.0" mnemonicParsing="false" onAction="#onAdd" text="保存" />
    </children>
 </Pane>

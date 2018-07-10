@@ -113,6 +113,7 @@ public class Controller1 extends Sample implements Initializable{
 				table.getItems().add(new Person(list.get(i)));
 			}
     	}
+    	initialize(null, null);
     }
 
     @FXML
@@ -126,6 +127,8 @@ public class Controller1 extends Sample implements Initializable{
     	String result = url.getText();
     	Sample Daialog2 = new Sample();
     	Daialog2.dialog2(result,comBox);
+    	
+
     }
 
     @FXML
@@ -162,6 +165,7 @@ public class Controller1 extends Sample implements Initializable{
 				}
 	    	}
     	}
+    	initialize(null, null);
     }
 
     @FXML
@@ -189,6 +193,7 @@ public class Controller1 extends Sample implements Initializable{
 	    	m1.getBookMarkList().get(name).get(max+1).put(bookMarkName, text);
 	    	common.SaveData.save(m1);
     	}
+    	initialize(null, null);
     }
 
     public class Person {

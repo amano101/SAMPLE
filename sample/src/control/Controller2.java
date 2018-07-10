@@ -1,7 +1,8 @@
 package control;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import common.LodeData;
@@ -20,9 +21,9 @@ public class Controller2 implements Initializable{
     	LodeData lodeData = new LodeData();
     	lodeData.lode();
     	m1 = lodeData.getM1();
-    	onAdd.getItems().clear();
+    	playList.getItems().clear();
     	if(new common.NullCheck().nullCheck(m1)) {
-    		onAdd.getItems().addAll(m1.getBookMarkList().keySet());
+    		playList.getItems().addAll(m1.getBookMarkList().keySet());
     	}
     }
 
@@ -36,11 +37,11 @@ public class Controller2 implements Initializable{
 
     /** コンボボックス：名前 */
     @FXML
-    private ComboBox<String> onAdd;
+    private ComboBox<String> playList;
 
     Alert alert = new Alert(AlertType.ERROR); //アラートを作成
 
-	@FXML
+/*	@FXML
     public void onClick(ActionEvent event) {
     	String name = urlName.getText();
     	String url = urlText;
@@ -66,18 +67,94 @@ public class Controller2 implements Initializable{
 
         	common.SaveData.save(m1);
         }
-    }
 
+    }
+*/
 	@FXML
     public void onAddPlayList(ActionEvent event) {
+		String playListName = urlName.getText();
+		if(playListName.isEmpty() || playListName == "null") {
+        	alert.setContentText("名前を入力して下さい。");
+        	alert.showAndWait(); //表示
+        	return;
+        }
+		else {
+			List<String> list = new ArrayList<>();
+			list.addAll(m1.getBookMarkList().keySet());
+			boolean cheak = false;
+			for(int i = 0;i<list.size();i++) {
+				if(list.get(i) == playListName) {
+					cheak = true;
+					return;
+				}
+			}
+			if(!cheak) {
+				m1.getBookMarkList().put(playListName,new HashMap());
+				common.SaveData.save(m1);
+			}
+		}
+		 initialize(null, null);
 	}
 
 	@FXML
     public void onDeletePlayList(ActionEvent event) {
+		String selectPlayList = playList.getValue();
+		if(selectPlayList.isEmpty() || selectPlayList == "null") {
+			alert.setContentText("プレイリストを選択して下さい。");
+        	alert.showAndWait(); //表示
+        	return;
+		}
+		else{
+			m1.getBookMarkList().remove(selectPlayList);
+			common.SaveData.save(m1);
+		}
+		initialize(null, null);
 	}
 
 	@FXML
     public void onAdd(ActionEvent event) {
+		String selectPlayList = playList.getValue();
+		String name = urlName.getText();
+		String url = urlText;
+		if(selectPlayList.isEmpty() || selectPlayList == "null") {
+			alert.setContentText("プレイリストを選択して下さい。");
+        	alert.showAndWait(); //表示
+        	return;
+		}
+		else if(name.isEmpty() || name == "null") {
+        	alert.setContentText("名前を入力して下さい。");
+        	alert.showAndWait(); //表示
+        	return;
+        }
+
+        else if(!(new common.NullCheck().nullCheck(m1))) {
+        	alert.setContentText("URLがありません。");
+        	alert.showAndWait(); //表示
+        	return;
+        }
+
+        else {
+        	List<Integer> sort = new ArrayList<>();
+        	Integer max = 0;
+	    	sort.addAll(m1.getBookMarkList().get(selectPlayList).keySet());
+	    	for(int i = 0; i < sort.size(); i++) {
+	            max = Math.max(max,sort.get(i));
+	     	}
+	    	m1.getBookMarkList().get(selectPlayList).put(max+1, new HashMap());
+	    	m1.getBookMarkList().get(selectPlayList).get(max+1).put(name, url);
+
+	    	common.SaveData.save(m1);
+
+        	/*Map<String, Map<Integer, Map<String, String>>> bookMark = new HashMap<String, Map<Integer,Map<String,String>>>();
+        	bookMark = m1.getBookMarkList();
+        	bookMark.put("test",new HashMap());
+        	bookMark.get("test").put(1, new HashMap());
+        	bookMark.get("test").get(1).put(name, url);
+        	m1.setBookMarkList(bookMark);
+
+        	common.SaveData.save(m1);*/
+        }
+		initialize(null, null);
 	}
 
 	@FXML
