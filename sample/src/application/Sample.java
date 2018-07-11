@@ -2,8 +2,6 @@ package application;
 
 import java.net.URL;
 
-import control.Controller2;
-import control.Controller3;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -24,16 +22,16 @@ public class Sample extends Application {
     	String fxml = "/view/url.fxml";
      	xfmlLode(fxml);
     }
-
+/*
     public void dialog1(String result) throws Exception{
     	String fxml = "/view/dialog1.fxml";
     	xfmlLode(fxml,result);
-    }
+    }*/
 
-    public void dialog2(String result,String bookMarkName) throws Exception{
+/*    public void dialog2(String result,String bookMarkName) throws Exception{
     	String fxml = "/view/dialog2.fxml";
     	xfmlLode(fxml,result,bookMarkName);
-    }
+    }*/
 
     public void xfmlLode(String fxml) throws Exception {
     	Stage stage = new Stage();
@@ -48,7 +46,7 @@ public class Sample extends Application {
         stage.show();
     }
 
-    public void xfmlLode(String fxml,String result) throws Exception {
+/*      public void xfmlLode(String fxml,String result) throws Exception {
     	Stage stage = new Stage();
     	URL             location    = getClass().getResource(fxml);
         FXMLLoader      fxmlLoader  = new FXMLLoader( location );
@@ -65,9 +63,9 @@ public class Sample extends Application {
         // ウィンドウ表示
         stage.setScene( scene );
         stage.show();
-    }
+    }*/
 
-    public void xfmlLode(String fxml,String result,String comBox) throws Exception {
+/*    public void xfmlLode(String fxml,String result,String comBox) throws Exception {
     	Stage stage = new Stage();
     	URL             location    = getClass().getResource(fxml);
         FXMLLoader      fxmlLoader  = new FXMLLoader( location );
@@ -86,7 +84,7 @@ public class Sample extends Application {
         stage.setScene( scene );
         stage.show();
     }
-
+*/
 	public M1 getM1() {
 		return m1;
 	}

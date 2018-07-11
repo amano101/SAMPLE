@@ -27,8 +27,6 @@ public class Controller3 implements Initializable{
 
     private static String comBoxDate;
 
-    private static Integer flag;
-
     Alert alert = new Alert(AlertType.ERROR); //アラートを作成
 
 	@FXML
@@ -36,7 +34,6 @@ public class Controller3 implements Initializable{
     	String textName = text.getText();
     	String url = urlText;
     	String comBox = comBoxDate;
-    	Integer flagValue = flag;
         if(textName.isEmpty() || textName == "null") {
         	alert.setContentText("名前を入力して下さい。");
         	alert.showAndWait(); //表示
@@ -80,9 +77,5 @@ public class Controller3 implements Initializable{
 
 	public void setComBox(String comBox) {
 		comBoxDate = comBox;
-	}
-
-	public void setFlag(Integer flagValue) {
-		flag = flagValue;
 	}
 }

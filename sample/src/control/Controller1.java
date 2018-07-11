@@ -12,7 +12,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -21,7 +23,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
 import javafx.scene.web.WebView;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.M1;
 
 public class Controller1 extends Sample implements Initializable{
@@ -67,6 +72,7 @@ public class Controller1 extends Sample implements Initializable{
     		List<String> listData = new ArrayList<>();
     		listData.addAll(m1.getBookMarkList().keySet());
 	    	if(m1.getBookMarkList().size()> 0) {
+	    		moveMenu.getItems().clear();
 	    		moveMenu.setDisable(false);
 	    		for(int i = 0;i < m1.getBookMarkList().size(); i++) {
 	    			menuItem = new MenuItem(listData.get(i));
@@ -90,45 +96,99 @@ public class Controller1 extends Sample implements Initializable{
         }
     }
 
+    private void abortAction(WindowEvent t) {
+    	initialize(null, null);
+    }
+
+
     @FXML
     public void onBookmark(ActionEvent event) throws Exception {
+    	String comBox = list.getValue();
     	String result = url.getText();
-    	Sample Daialog1 = new Sample();
-    	Daialog1.dialog1(result);
+    	String fxml = "/view/dialog1.fxml";
+    	Stage stage = new Stage();
+    	URL             location    = getClass().getResource(fxml);
+        FXMLLoader      fxmlLoader  = new FXMLLoader( location );
+        // シーングラフの作成
+        Pane    root        = (Pane) fxmlLoader.load();
+
+        // ロードしたFXMLファイルに関連づくControllerを取得
+        final Controller2 c2 = (Controller2) fxmlLoader.getController();
+        // Controllerさん、どうぞ。
+        c2.setUrl(result);
+        c2.setComBox(comBox);
+
+
+        // シーンの作成
+        Scene   scene       = new Scene( root , root.getPrefWidth() , root.getPrefHeight());
+        // ウィンドウ表示
+        stage.setScene( scene );
+        stage.show();
+
+    	stage.setOnCloseRequest(t -> {
+    		stage.hide();
+        	abortAction(t);
+        });
     }
 
     @FXML
     public void onChange(ActionEvent event) throws Exception {
+    	table.getItems().clear();
     	String comBox = list.getValue();
     	List<String> list = new ArrayList<>();
-    	Map<String, String> map = new HashMap<>();
+    	Map<String,String> map = new HashMap<>();
     	if(new common.NullCheck().nullCheck(m1)) {
-	    	for(int i = 0;i < sort.size();i++) {
-	    		map.putAll(m1.getBookMarkList().get(comBox).get(i));
-	    	}
-	    	sort.addAll(m1.getBookMarkList().get(comBox).keySet());
-
-			for(int i = 0;i < sort.size();i++) {
-				list.addAll(m1.getBookMarkList().get(comBox).get(sort.get(0)).keySet());
-				table.getItems().add(new Person(list.get(i)));
-			}
+    		sort.clear();
+    		if(!(m1.getBookMarkList().get(comBox).isEmpty()) || m1.getBookMarkList().get(comBox) != null) {
+    		sort.addAll(m1.getBookMarkList().get(comBox).keySet());
+    		}
+/*	    	for(int i = 0;i < sort.size();i++) {
+	    		map.putAll(m1.getBookMarkList().get(comBox).get(sort.get(0)));
+	    	}*/
+    		if(!(sort.isEmpty()) || sort != null) {
+				for(int i = 0;i < sort.size();i++) {
+					list.addAll(m1.getBookMarkList().get(comBox).get(sort.get(i)).keySet());
+					table.getItems().add(new Person(list.get(i)));
+				}
+    		}
     	}
-    	initialize(null, null);
     }
 
     @FXML
     public void onMenu(ActionEvent event) {
-    	this.bookMarkName = table.getSelectionModel().getSelectedItem().name.getValue();
+    	if(table.getSelectionModel().getSelectedItem() != null) {
+    		this.bookMarkName = table.getSelectionModel().getSelectedItem().name.getValue();
+    	}
     }
 
     @FXML
     public void onAdd(ActionEvent event) throws Exception {
     	String comBox = list.getValue();
     	String result = url.getText();
-    	Sample Daialog2 = new Sample();
-    	Daialog2.dialog2(result,comBox);
-    	
+    	String fxml = "/view/dialog2.fxml";
 
+    	Stage stage = new Stage();
+    	URL             location    = getClass().getResource(fxml);
+        FXMLLoader      fxmlLoader  = new FXMLLoader( location );
+        // シーングラフの作成
+        Pane    root        = (Pane) fxmlLoader.load();
+
+        // ロードしたFXMLファイルに関連づくControllerを取得
+        final Controller3 c3 = (Controller3) fxmlLoader.getController();
+        // Controllerさん、どうぞ。
+        c3.setUrl(result);
+        c3.setComBox(comBox);
+
+        // シーンの作成
+        Scene   scene       = new Scene( root , root.getPrefWidth() , root.getPrefHeight());
+        // ウィンドウ表示
+        stage.setScene( scene );
+        stage.show();
+
+    	stage.setOnCloseRequest(t -> {
+    		stage.hide();
+        	abortAction(t);
+        });
     }
 
     @FXML
@@ -142,21 +202,23 @@ public class Controller1 extends Sample implements Initializable{
 	    		if(m1.getBookMarkList().get(comBox).get(sort.get(i)).containsKey(bookMarkName) == true) {
 	    			m1.getBookMarkList().get(comBox).get(sort.get(i)).remove(bookMarkName);
 	    			m1.getBookMarkList().get(comBox).remove(sort.get(i));
+	    			break;
 	    		}
 	    	}
+	    	sort.clear();
 	    	sort.addAll(m1.getBookMarkList().get(comBox).keySet());
-	    	if(sort == null || sort.isEmpty()) {
-		    	for(int j = 1;j < sort.size()+1;j++){
-		    		m1.getBookMarkList().get(comBox).put(j,m1.getBookMarkList().get(comBox).get(sort.get(j)));
+	    	if(!(sort.isEmpty() || sort != null)) {
+		    	for(int i = 0;i < sort.size();i++){
+		    		m1.getBookMarkList().get(comBox).put(i,m1.getBookMarkList().get(comBox).get(sort.get(i+1)));
 		    	}
-		    	common.SaveData.save(m1);
 		    }
 	    	common.SaveData.save(m1);
-
+	    	initialize(null, null);
 	    	if(new common.NullCheck().nullCheck(m1)) {
 		    	for(int i = 0;i < sort.size();i++) {
 		    		map.putAll(m1.getBookMarkList().get(comBox).get(i));
 		    	}
+		    	sort.clear();
 		    	sort.addAll(m1.getBookMarkList().get(comBox).keySet());
 
 				for(int i = 0;i < sort.size();i++) {
@@ -165,7 +227,6 @@ public class Controller1 extends Sample implements Initializable{
 				}
 	    	}
     	}
-    	initialize(null, null);
     }
 
     @FXML

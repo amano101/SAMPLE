@@ -16,16 +16,6 @@ import javafx.scene.control.TextField;
 import model.M1;
 
 public class Controller2 implements Initializable{
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-    	LodeData lodeData = new LodeData();
-    	lodeData.lode();
-    	m1 = lodeData.getM1();
-    	playList.getItems().clear();
-    	if(new common.NullCheck().nullCheck(m1)) {
-    		playList.getItems().addAll(m1.getBookMarkList().keySet());
-    	}
-    }
 
     M1 m1 = new M1();
 
@@ -40,6 +30,23 @@ public class Controller2 implements Initializable{
     private ComboBox<String> playList;
 
     Alert alert = new Alert(AlertType.ERROR); //アラートを作成
+
+	private String comBoxDate;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+    	LodeData lodeData = new LodeData();
+    	lodeData.lode();
+    	m1 = lodeData.getM1();
+    	String comBox = comBoxDate;
+    	playList.getItems().clear();
+    	if(new common.NullCheck().nullCheck(m1)) {
+    		playList.getItems().addAll(m1.getBookMarkList().keySet());
+	    	if(comBox != "null") {
+	    		playList.getSelectionModel().select(comBoxDate);
+	    	}
+    	}
+    }
 
 /*	@FXML
     public void onClick(ActionEvent event) {
@@ -144,15 +151,6 @@ public class Controller2 implements Initializable{
 	    	m1.getBookMarkList().get(selectPlayList).get(max+1).put(name, url);
 
 	    	common.SaveData.save(m1);
-
-        	/*Map<String, Map<Integer, Map<String, String>>> bookMark = new HashMap<String, Map<Integer,Map<String,String>>>();
-        	bookMark = m1.getBookMarkList();
-        	bookMark.put("test",new HashMap());
-        	bookMark.get("test").put(1, new HashMap());
-        	bookMark.get("test").get(1).put(name, url);
-        	m1.setBookMarkList(bookMark);
-
-        	common.SaveData.save(m1);*/
         }
 		initialize(null, null);
 	}
@@ -165,4 +163,10 @@ public class Controller2 implements Initializable{
 	public void setUrl(String url) {
 		urlText = url;
 	}
+
+	public void setComBox(String comBox) {
+		comBoxDate = comBox;
+		initialize(null, null);
+	}
+
 }
